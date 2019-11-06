@@ -1,4 +1,4 @@
-;;; magit-arcanist-diff.el --- diff functionality -*- lexical-binding:t ; -*-
+;;; magit-arcanist-run.el --- run functionality -*- lexical-binding:t ; -*-
 
 ;;; Copyright © 2018-2018 Jonathan Jin <jjin082693@gmail.com>
 
@@ -20,25 +20,20 @@
 ;; Boston, MA 02110-1301, USA.
 
 ;;; Commentary:
-;; This library implements Arcanist diff functionality.
+;; This library implements functionality to run arcanist.
 
 ;; Code:
 
-(require 'magit-arcanist-run)
-(require 'magit-popup)
+(require 'magit)
 
-(defun magit-arcanist--do-diff (&optional flags)
-  "Runs `arc diff' using FLAGS, e.g. \"--nolint\"."
-  (interactive (magit-arcanist-diff-arguments))
-  (magit-arcanist--run-arc-cmd "diff" flags))
+(defcustom magit-arcanist-arc-executable (executable-find "arc")
+  "Path to the `arc' executable. `magit-arcanist-enable' will
+fail if this path does not exist."
+  :type 'string)
 
-(magit-define-popup magit-arcanist-diff-popup
-  "Popup console for Arcanist diff commands."
-  :switches '((?l "No lint" "--nolint")
-              (?u "No unit tests" "--nounit")
-              (?c "No coverage info" "--no-coverage"))
-  :actions '((?d "Diff" magit-arcanist--do-diff)))
+(defun magit-arcanist--run-arc-cmd (cmd &optional args)
+  (apply #'magit-start-process magit-arcanist-arc-executable nil cmd args))
 
-(provide 'magit-arcanist-diff)
+(provide 'magit-arcanist-run)
 
-;;; magit-arcanist-diff.el ends here
+;;; magit-arcanist.el ends here

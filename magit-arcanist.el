@@ -35,20 +35,13 @@
 
 (require 'magit)
 (require 'magit-popup)
+(require 'magit-arcanist-run)
 (require 'magit-arcanist-diff)
 
 (defcustom magit-arcanist-key (kbd "@")
   "Key to invoke the magit-arcanist popup within Magit. This
 needs to be set before the call to `magit-arcanist-enable'."
   :type 'string)
-
-(defcustom magit-arcanist-arc-executable (executable-find "arc")
-  "Path to the `arc' executable. `magit-arcanist-enable' will
-fail if this path does not exist."
-  :type 'string)
-
-(defun magit-arcanist--run-arc-cmd (cmd &optional args)
-  (apply #'magit-start-process magit-arcanist-arc-executable nil cmd args))
 
 (defun magit-arcanist-land ()
   (ignore))
